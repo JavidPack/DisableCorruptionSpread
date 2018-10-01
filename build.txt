@@ -1,0 +1,7 @@
+author = jopojelly
+version = 1.0.1
+displayName = Begone, Evil! (Disable Corruption Spread)
+dllReferences = 0Harmony
+languageVersion = 6
+homepage = https://forums.terraria.org/index.php?threads/begone-evil-disable-corruption-spread.72285/
+includePDB = true
