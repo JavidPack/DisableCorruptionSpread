@@ -1,8 +1,10 @@
-This mod allows corruption spread to be toggled. By default, corruption spread will be disabled just by enabling this mod.
+This mod allows biome spread to be toggled. By default, biome spread will be disabled just by enabling this mod.
+
+Crimson, Corruption, and Hallow biome spread are affected by this mod. In addition, the random patches of evil biome spawned by breaking Demon Altars will also be disabled.
 
 The setting is saved per world. 
 
-If you'd like to re-enable corruption spreading, you can use the Hero's Mod integration or a chat command to toggle the effect.
+If you'd like to re-enable biome spreading, you can use the Hero's Mod integration or a chat command to toggle the effect.
 
 With Hero's Mod enabled, the "Toggle Corruption Spread" permission allows you to use the Toggle Corruption Spread button in the Extension Tools sub-menu.
 
