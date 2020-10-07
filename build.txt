@@ -1,5 +1,5 @@
 author = jopojelly
-version = 1.1
+version = 1.1.1
 displayName = Begone, Evil! (Disable Evil Biome Spread)
 homepage = https://forums.terraria.org/index.php?threads/begone-evil-disable-corruption-spread.72285/
 includePDB = true

@@ -175,30 +175,33 @@ namespace DisableCorruptionSpread
 		private void WorldGen_SmashAltar(ILContext il) {
 			// Modifies this code: 
 			/*
- 				int num10 = WorldGen.genRand.Next(3);
-				int num11 = 0;
-			+	nume10 = 2; // skips the randomly occuring while loop
-				while (num10 != 2 && num11++ < 1000)
+ 				int num9 = genRand.Next(3);
+				int num10 = 0;
+			+	nume9 = 2; // skips the randomly occuring while loop
+				while (num9 != 2 && num10++ < 1000)
 			{
 			*/
 
 			var c = new ILCursor(il);
 
+			const int localIndexOfNum9 = 4;
+			const int localIndexOfNum10 = 5;
+
 			if (!c.TryGotoNext(MoveType.After,
 				i => i.MatchLdcI4(3),
 				i => i.MatchCallvirt<Terraria.Utilities.UnifiedRandom>("Next"),
-				i => i.MatchStloc(5),
+				i => i.MatchStloc(localIndexOfNum9),
 				i => i.MatchLdcI4(0),
-				i => i.MatchStloc(6)))
+				i => i.MatchStloc(localIndexOfNum10)))
 				return; // Patch unable to be applied
 
-			c.Emit(Ldloc_S, (byte)5);
-			c.EmitDelegate<Func<int, int>>((int num10) => {
+			c.Emit(Ldloc_S, (byte)localIndexOfNum9);
+			c.EmitDelegate<Func<int, int>>((int num9) => {
 				if (DisableCorruptionSpreadModWorld.CorruptionSpreadDisabled)
-					num10 = 2; // Force while loop to fail
-				return num10;
+					num9 = 2; // Force while loop to fail
+				return num9;
 			});
-			c.Emit(Stloc_S, (byte)5);
+			c.Emit(Stloc_S, (byte)localIndexOfNum9);
 
 			patchSuccessAltar = true;
 		}
