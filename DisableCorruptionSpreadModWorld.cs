@@ -114,6 +114,8 @@ namespace DisableCorruptionSpread
 			}
 
 			c.Emit<DisableCorruptionSpreadModWorld>(Ldsfld, nameof(CorruptionSpreadDisabled));
+			c.Emit(Ldc_I4, 0);
+			c.Emit(Ceq);
 			c.Emit<WorldGen>(Stsfld, nameof(WorldGen.AllowedToSpreadInfections));
 		}
 
