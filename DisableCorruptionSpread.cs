@@ -2,7 +2,9 @@ using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 using System;
 using System.IO;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Chat;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -133,7 +135,7 @@ namespace DisableCorruptionSpread
 		}
 		private void WorldGen_UpdateWorld(ILContext il) {
 			// Prevents Grass Tile Spread
-			// Modifies this code: 
+			// Modifies this code:
 			/*
 			for (int num22 = num9; num22 < num10; num22++)
 			{
@@ -173,9 +175,9 @@ namespace DisableCorruptionSpread
 		}
 
 		private void WorldGen_SmashAltar(ILContext il) {
-			// Modifies this code: 
+			// Modifies this code:
 			/*
- 				int num9 = genRand.Next(3);
+				int num9 = genRand.Next(3);
 				int num10 = 0;
 			+	nume9 = 2; // skips the randomly occuring while loop
 				while (num9 != 2 && num10++ < 1000)
@@ -220,7 +222,7 @@ namespace DisableCorruptionSpread
 		}
 
 		private void SetupHEROsModIntegration() {
-			// Add Permissions always. 
+			// Add Permissions always.
 			HEROsMod.Call(
 				// Special string
 				"AddPermission",
@@ -237,7 +239,7 @@ namespace DisableCorruptionSpread
 					// Name of Permission governing the availability of the button/tool
 					ToggleCorruptionSpread_Permission,
 					// Texture of the button. 38x38 is recommended for HERO's Mod. Also, a white outline on the icon similar to the other icons will look good.
-					GetTexture("ToggleCorruptionSpreadButton"),
+					Assets.Request<Texture2D>("ToggleCorruptionSpreadButton"),
 					// A method that will be called when the button is clicked
 					(Action)ToggleCorruptionSpreadButtonPressed,
 					// A method that will be called when the player's permissions have changed
@@ -316,7 +318,7 @@ namespace DisableCorruptionSpread
 			}
 			else {
 				Console.WriteLine(message);
-				NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), Color.MediumVioletRed);
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(message), Color.MediumVioletRed);
 				NetMessage.SendData(MessageID.WorldData);
 			}
 		}
@@ -329,23 +331,21 @@ namespace DisableCorruptionSpread
 	}
 
 	// I don't think we need to worry about wall spreading since it is limited naturally by tiles.
-	internal class DisableCorruptionSpreadModWorld : ModWorld
+	internal class DisableCorruptionSpreadModWorld : ModSystem
 	{
 		public static bool CorruptionSpreadDisabled; // true until toggled. Don't rename since "CorruptionSpreadDisabled" is used in TagCompound
 
-		public override void Initialize() {
+		public override void OnWorldLoad() {
 			CorruptionSpreadDisabled = true;
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadWorldData(TagCompound tag) {
 			if (tag.ContainsKey(nameof(CorruptionSpreadDisabled)))
 				CorruptionSpreadDisabled = tag.GetBool(nameof(CorruptionSpreadDisabled)); // using nameof (c#6) can help prevent spelling errors. Be aware that it will lose data if you rename the field.
 		}
 
-		public override TagCompound Save() {
-			return new TagCompound {
-				{nameof(CorruptionSpreadDisabled), CorruptionSpreadDisabled}
-			};
+		public override void SaveWorldData(TagCompound tag) {
+				tag[nameof(CorruptionSpreadDisabled)] = CorruptionSpreadDisabled;
 		}
 
 		public override void NetSend(BinaryWriter writer) {
