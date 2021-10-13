@@ -75,9 +75,12 @@ namespace DisableCorruptionSpread
 		private void WorldGen_UpdateWorld_Inner(ILContext il) {
 			// Prevents Tile Spread
 			// Modifies this code:
-			// AllowedToSpreadInfections = true;
-			//+AllowedToSpreadInfections = false;
-			// CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
+//			 AllowedToSpreadInfections = true;
+//			 CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
+//			 if (power != null && power.GetIsUnlocked())
+//				AllowedToSpreadInfections = !power.Enabled;
+//			+AllowedToSpreadInfections = false;
+//			 int wallDist = 3;
 
 			var c = new ILCursor(il);
 
