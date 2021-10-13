@@ -3,6 +3,7 @@ using System.IO;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
@@ -16,27 +17,14 @@ namespace DisableCorruptionSpread
 	{
 		public static bool CorruptionSpreadDisabled; // true until toggled. Don't rename since "CorruptionSpreadDisabled" is used in TagCompound
 
-		public static bool patchSuccessTileSpread; // mod will not be loaded if false;
-		public static bool patchSuccessAltar;
-
 		public override void Load() {
-			patchSuccessTileSpread = false;
-			patchSuccessAltar = false;
-
 			// To test: use ModdersToolkit REPL: Main.worldRate = 50;
 
 			ILWorldGen.UpdateWorld_Inner += WorldGen_UpdateWorld_Inner;
 			ILWorldGen.SmashAltar += WorldGen_SmashAltar;
-
-			if (!patchSuccessTileSpread)
-				Mod.Logger.Error("Failed to apply the patch for tile spreading");
-			if (!patchSuccessAltar)
-				Mod.Logger.Warn("Failed to apply the patch for fixing altar chance to spawn random tile of corruption");
 		}
 
 		public override void Unload() {
-			patchSuccessTileSpread = false;
-			patchSuccessAltar = false;
 		}
 
 		/*
@@ -95,17 +83,39 @@ namespace DisableCorruptionSpread
 
 			Func<Instruction, bool>[] instructions =
 			{
+				// AllowedToSpreadInfections = true;
 				i => i.MatchLdcI4(1),
+				i => i.MatchStsfld<WorldGen>(nameof(WorldGen.AllowedToSpreadInfections)),
+				// CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
+				i => i.MatchLdsfld<CreativePowerManager>(nameof(CreativePowerManager.Instance)),
+				i => i.MatchCallvirt<CreativePowerManager>(nameof(CreativePowerManager.GetPower)),
+				i => i.MatchStloc(0),
+				// if (power != null && power.GetIsUnlocked())
+				i => i.MatchLdloc(0),
+				i => i.MatchBrfalse(out _),
+				i => i.MatchLdloc(0),
+				i => i.MatchCallvirt<CreativePowers.ASharedTogglePower>(nameof(CreativePowers.ASharedTogglePower.GetIsUnlocked)),
+				i => i.MatchBr(out _),
+				// No code
+				i => i.MatchLdcI4(0),
+				i => i.MatchStloc(9),
+				// AllowedToSpreadInfections = !power.Enabled;
+				i => i.MatchLdloc(9),
+				i => i.MatchBrfalse(out _),
+				i => i.MatchLdloc(0),
+				i => i.MatchCallvirt<CreativePowers.ASharedTogglePower>($"get_{nameof(CreativePowers.ASharedTogglePower.Enabled)}"),
+				i => i.MatchLdcI4(0),
+				i => i.MatchCeq(),
 				i => i.MatchStsfld<WorldGen>(nameof(WorldGen.AllowedToSpreadInfections))
 			};
 
-			if (!c.TryGotoNext(MoveType.After, instructions))
+			if (!c.TryGotoNext(MoveType.After, instructions)) {
+				Mod.Logger.Error("Failed to apply the patch for tile spreading");
 				return; // Patch unable to be applied
+			}
 
 			c.Emit<DisableCorruptionSpreadModWorld>(Ldsfld, nameof(CorruptionSpreadDisabled));
 			c.Emit<WorldGen>(Stsfld, nameof(WorldGen.AllowedToSpreadInfections));
-
-			patchSuccessTileSpread = true;
 		}
 
 		private void WorldGen_SmashAltar(ILContext il) {
@@ -123,13 +133,19 @@ namespace DisableCorruptionSpread
 			const int localIndexOfNum9 = 5;
 			const int localIndexOfNum10 = 6;
 
-			if (!c.TryGotoNext(MoveType.After,
+			Func<Instruction, bool>[] instructions =
+			{
 				i => i.MatchLdcI4(3),
 				i => i.MatchCallvirt<UnifiedRandom>(nameof(UnifiedRandom.Next)),
 				i => i.MatchStloc(localIndexOfNum9),
 				i => i.MatchLdcI4(0),
-				i => i.MatchStloc(localIndexOfNum10)))
+				i => i.MatchStloc(localIndexOfNum10)
+			};
+
+			if (!c.TryGotoNext(MoveType.After, instructions)) {
+				Mod.Logger.Warn("Failed to apply the patch for fixing altar chance to spawn random tile of corruption");
 				return; // Patch unable to be applied
+			}
 
 			c.Emit(Ldloc_S, (byte)localIndexOfNum9);
 			c.EmitDelegate<Func<int, int>>(num9 => {
@@ -138,8 +154,6 @@ namespace DisableCorruptionSpread
 				return num9;
 			});
 			c.Emit(Stloc_S, (byte)localIndexOfNum9);
-
-			patchSuccessAltar = true;
 		}
 
 		public override void OnWorldLoad() {
