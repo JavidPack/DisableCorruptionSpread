@@ -3,6 +3,7 @@ using MonoMod.Cil;
 using System;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
@@ -50,7 +51,7 @@ namespace DisableCorruptionSpread
 					// Name of Permission governing the availability of the button/tool
 					ToggleCorruptionSpread_Permission,
 					// Texture of the button. 38x38 is recommended for HERO's Mod. Also, a white outline on the icon similar to the other icons will look good.
-					Assets.Request<Texture2D>("ToggleCorruptionSpreadButton"),
+					Assets.Request<Texture2D>("ToggleCorruptionSpreadButton", AssetRequestMode.ImmediateLoad),
 					// A method that will be called when the button is clicked
 					(Action)ToggleCorruptionSpreadButtonPressed,
 					// A method that will be called when the player's permissions have changed
