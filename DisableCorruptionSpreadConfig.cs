@@ -34,8 +34,8 @@ namespace DisableCorruptionSpread
 		public bool DisableAltarSpreading;
 
 		public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message) {
-			if (DisableCorruptionSpread.instance.HEROsMod != null && DisableCorruptionSpread.instance.HEROsMod.Version >= new Version(0, 2, 2)) {
-				if (DisableCorruptionSpread.instance.HEROsMod.Call("HasPermission", whoAmI, DisableCorruptionSpread.ToggleCorruptionSpread_Permission) is bool result && result)
+			if (DisableCorruptionSpread.HEROsMod != null && DisableCorruptionSpread.HEROsMod.Version >= new Version(0, 2, 2)) {
+				if (DisableCorruptionSpread.HEROsMod.Call("HasPermission", whoAmI, DisableCorruptionSpread.ToggleCorruptionSpread_Permission) is bool result && result)
 					return true;
 				message = $"You lack the \"{DisableCorruptionSpread.ToggleCorruptionSpread_Display}\" permission.";
 				return false;
