@@ -75,12 +75,15 @@ namespace DisableCorruptionSpread
 		private void WorldGen_UpdateWorld_Inner(ILContext il) {
 			// Prevents Tile Spread
 			// Modifies this code:
-//			 AllowedToSpreadInfections = true;
-//			 CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
-//			 if (power != null && power.GetIsUnlocked())
-//				AllowedToSpreadInfections = !power.Enabled;
-//			+AllowedToSpreadInfections = false;
-//			 int wallDist = 3;
+			//			 AllowedToSpreadInfections = true;
+			//			 CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
+			//			 if (power != null && power.GetIsUnlocked())
+			//				AllowedToSpreadInfections = !power.Enabled;
+			//			+AllowedToSpreadInfections = CorruptionSpreadDisabled == false;
+			//			 int wallDist = 3;
+
+			// TODO: Should this be changed to honor Creative power menu selection?
+			// AllowedToSpreadInfections = AllowedToSpreadInfections && !CorruptionSpreadDisabled;
 
 			var c = new ILCursor(il);
 
