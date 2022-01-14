@@ -101,17 +101,13 @@ namespace DisableCorruptionSpread
 				i => i.MatchBrfalse(out _),
 				i => i.MatchLdloc(0),
 				i => i.MatchCallvirt<CreativePowers.ASharedTogglePower>(nameof(CreativePowers.ASharedTogglePower.GetIsUnlocked)),
-				i => i.MatchBr(out _),
-				i => i.MatchLdcI4(0),
-				i => i.MatchStloc(9),
-				i => i.MatchLdloc(9),
 				i => i.MatchBrfalse(out _),
 				// AllowedToSpreadInfections = !power.Enabled;
 				i => i.MatchLdloc(0),
 				i => i.MatchCallvirt<CreativePowers.ASharedTogglePower>($"get_{nameof(CreativePowers.ASharedTogglePower.Enabled)}"),
 				i => i.MatchLdcI4(0),
 				i => i.MatchCeq(),
-				i => i.MatchStsfld<WorldGen>(nameof(WorldGen.AllowedToSpreadInfections))
+				i => i.MatchStsfld<WorldGen>(nameof(WorldGen.AllowedToSpreadInfections)),
 			};
 
 			if (!c.TryGotoNext(MoveType.After, instructions)) {
