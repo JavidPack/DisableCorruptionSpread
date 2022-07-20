@@ -163,6 +163,10 @@ namespace DisableCorruptionSpread
 			CorruptionSpreadDisabled = true;
 		}
 
+		public override void PreWorldGen() {
+			CorruptionSpreadDisabled = true;
+		}
+
 		public override void LoadWorldData(TagCompound tag) {
 			if (tag.ContainsKey(nameof(CorruptionSpreadDisabled)))
 				CorruptionSpreadDisabled = tag.GetBool(nameof(CorruptionSpreadDisabled)); // using nameof (c#6) can help prevent spelling errors. Be aware that it will lose data if you rename the field.
