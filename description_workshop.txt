@@ -1,0 +1,18 @@
+This mod allows biome spread to be toggled in all worlds similar to the Infection Spread toggle available in Journey mode. By default, biome spread will be disabled just by enabling this mod.
+
+Crimson, Corruption, and Hallow biome spread are affected by this mod.
+
+The setting is saved per world. 
+
+If you'd like to re-enable biome spreading, you can use the Hero's Mod integration or a chat command to toggle the effect.
+
+With Hero's Mod enabled, the "Toggle Corruption Spread" permission allows you to use the Toggle Corruption Spread button in the Extension Tools sub-menu.
+
+In Chat or the Server console, the "/spread" command will toggle the effect. (just "spread" in the server console)
+
+[h1]Links[/h1]
+Source code hosted on [url=github.com/JavidPack/DisableCorruptionSpread]GitHub[/url], collaboration welcome
+For questions or suggestions, come to my Discord: [url=discord.gg/w8Hcwby][img]https://discordapp.com/api/guilds/276235094622994433/widget.png?style=shield[/img][/url]
+Bug reports in the comments here will not be seen, come to Discord or Github to report issues.
+If you'd like to support my mods, I have a Patreon [url=www.patreon.com/jopojelly][img]https://i.imgur.com/xII2DwJ.png[/img][/url]
+[url=https://steamcommunity.com/profiles/76561198025715866/myworkshopfiles/?appid=1281930]Check out all my mods[/url]

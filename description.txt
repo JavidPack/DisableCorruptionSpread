@@ -1,6 +1,6 @@
 This mod allows biome spread to be toggled in all worlds similar to the Infection Spread toggle available in Journey mode. By default, biome spread will be disabled just by enabling this mod.
 
-Crimson, Corruption, and Hallow biome spread are affected by this mod. In addition, the random patches of evil biome spawned by breaking Demon Altars will also be disabled.
+Crimson, Corruption, and Hallow biome spread are affected by this mod.
 
 The setting is saved per world. 
 

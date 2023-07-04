@@ -6,7 +6,7 @@ namespace DisableCorruptionSpread
 {
 	public class DisableCorruptionSpreadPlayer : ModPlayer
 	{
-		public override void OnEnterWorld(Player player) {
+		public override void OnEnterWorld() {
 			if (!DisableCorruptionSpreadModWorld.CorruptionSpreadDisabled) {
 				Main.NewText("Warning: Corruption Spread is enabled. Corruption will spread as normal. Use /spread in chat to disable spreading again.", Color.Orange);
 			}

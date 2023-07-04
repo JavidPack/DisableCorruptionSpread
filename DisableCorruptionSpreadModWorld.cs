@@ -7,7 +7,6 @@ using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
-using ILWorldGen = IL.Terraria.WorldGen;
 using static Mono.Cecil.Cil.OpCodes;
 
 namespace DisableCorruptionSpread
@@ -20,8 +19,9 @@ namespace DisableCorruptionSpread
 		public override void Load() {
 			// To test: use ModdersToolkit REPL: Main.worldRate = 50;
 
-			ILWorldGen.UpdateWorld_Inner += WorldGen_UpdateWorld_Inner;
-			ILWorldGen.SmashAltar += WorldGen_SmashAltar;
+
+			IL_WorldGen.UpdateWorld_Inner += WorldGen_UpdateWorld_Inner;
+			//IL_WorldGen.SmashAltar += WorldGen_SmashAltar;
 		}
 
 		public override void Unload() {
@@ -87,6 +87,19 @@ namespace DisableCorruptionSpread
 
 			var c = new ILCursor(il);
 
+			// simplified:
+			//			+AllowedToSpreadInfections = CorruptionSpreadDisabled == false;
+			//			 int wallDist = 3;
+			c.GotoNext(MoveType.Before, i => i.MatchLdcI4(3), i => i.MatchStloc(1));
+			c.MoveAfterLabels();
+			// is emitdelegate slower than direct il code?
+			c.EmitDelegate(() => {
+				if (CorruptionSpreadDisabled) {
+					WorldGen.AllowedToSpreadInfections = false;
+				}
+			});
+
+			/*
 			Func<Instruction, bool>[] instructions =
 			{
 				// AllowedToSpreadInfections = true;
@@ -119,10 +132,13 @@ namespace DisableCorruptionSpread
 			c.Emit(Ldc_I4, 0);
 			c.Emit(Ceq);
 			c.Emit<WorldGen>(Stsfld, nameof(WorldGen.AllowedToSpreadInfections));
+			*/
 		}
 
+		/* 1.4.4 removes this.
 		private void WorldGen_SmashAltar(ILContext il) {
 			// Modifies this code:
+		*/
 			/*
 				int num9 = genRand.Next(3);
 				int num10 = 0;
@@ -130,7 +146,7 @@ namespace DisableCorruptionSpread
 				while (num9 != 2 && num10++ < 1000)
 			{
 			*/
-
+		/*
 			var c = new ILCursor(il);
 
 			const int localIndexOfNum9 = 5;
@@ -158,7 +174,13 @@ namespace DisableCorruptionSpread
 			});
 			c.Emit(Stloc_S, (byte)localIndexOfNum9);
 		}
+		*/
 
+		public override void ClearWorld() {
+			CorruptionSpreadDisabled = true;
+		}
+
+		/*
 		public override void OnWorldLoad() {
 			CorruptionSpreadDisabled = true;
 		}
@@ -166,6 +188,7 @@ namespace DisableCorruptionSpread
 		public override void PreWorldGen() {
 			CorruptionSpreadDisabled = true;
 		}
+		*/
 
 		public override void LoadWorldData(TagCompound tag) {
 			if (tag.ContainsKey(nameof(CorruptionSpreadDisabled)))
