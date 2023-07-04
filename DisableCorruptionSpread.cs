@@ -64,7 +64,7 @@ namespace DisableCorruptionSpread
 
 		// These assume patchSuccess and permissions.
 		public static string ToggleCorruptionSpreadTooltip() {
-			return DisableCorruptionSpreadModWorld.CorruptionSpreadDisabled ? "Enable Corruption Spread" : "Disable Corruption Spread";
+			return Language.GetTextValue(ModContent.GetInstance<DisableCorruptionSpread>().GetLocalizationKey(DisableCorruptionSpreadModWorld.CorruptionSpreadDisabled ? "EnableCorruptionSpread" : "DisableCorruptionSpread"));
 		}
 
 		public void ToggleCorruptionSpreadButtonPressed() {
@@ -121,7 +121,7 @@ namespace DisableCorruptionSpread
 
 		public static void ToggleCorruption() {
 			DisableCorruptionSpreadModWorld.CorruptionSpreadDisabled = !DisableCorruptionSpreadModWorld.CorruptionSpreadDisabled;
-			string message = (DisableCorruptionSpreadModWorld.CorruptionSpreadDisabled ? "Corruption Spread is now disabled. Corruption won't spread." : "Corruption Spread is now enabled. Corruption will spread as normal.");
+			string message = Language.GetTextValue(ModContent.GetInstance<DisableCorruptionSpread>().GetLocalizationKey(DisableCorruptionSpreadModWorld.CorruptionSpreadDisabled ? "CorruptionSpreadDisabledMessage" : "CorruptionSpreadEnabledMessage"));
 			if (Main.netMode == NetmodeID.SinglePlayer) {
 				Main.NewText(message, Color.MediumVioletRed);
 			}
@@ -130,6 +130,7 @@ namespace DisableCorruptionSpread
 			}
 			else {
 				Console.WriteLine(message);
+				// TODO: Send NetworkText.FromKey instead.
 				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(message), Color.MediumVioletRed);
 				NetMessage.SendData(MessageID.WorldData);
 			}

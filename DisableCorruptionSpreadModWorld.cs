@@ -208,5 +208,11 @@ namespace DisableCorruptionSpread
 			BitsByte flags = reader.ReadByte();
 			flags.Retrieve(ref CorruptionSpreadDisabled);
 		}
+
+		/*
+		public override void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate) {
+			tileUpdateRate *= 100;
+		}
+		*/
 	}
 }

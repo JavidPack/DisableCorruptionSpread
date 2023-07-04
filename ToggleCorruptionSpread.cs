@@ -1,3 +1,4 @@
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DisableCorruptionSpread
@@ -17,7 +18,7 @@ namespace DisableCorruptionSpread
 			else {
 				// SP or Client Request
 				if (DisableCorruptionSpread.HEROsMod != null) {
-					caller.Reply("Use the Heros Mod button instead.");
+					caller.Reply(Language.GetTextValue(Mod.GetLocalizationKey("UseHerosButtonInstead")));
 				}
 				else {
 					DisableCorruptionSpread.ToggleCorruption();
