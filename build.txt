@@ -1,4 +1,4 @@
 author = jopojelly
-version = 1.3.0.1
+version = 1.3.0.2
 displayName = Begone, Evil! (Disable Evil Biome Spread)
 homepage = https://forums.terraria.org/index.php?threads/begone-evil-disable-corruption-spread.72285/

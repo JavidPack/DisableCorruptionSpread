@@ -1,3 +1,5 @@
+[img]https://i.imgur.com/W2c5CX6.gif[/img]
+
 This mod allows biome spread to be toggled in all worlds similar to the Infection Spread toggle available in Journey mode. By default, biome spread will be disabled just by enabling this mod.
 
 Crimson, Corruption, and Hallow biome spread are affected by this mod.
