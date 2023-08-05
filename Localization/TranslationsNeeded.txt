@@ -1,0 +1,9 @@
+en-US, 6/6, 100%, missing 0
+de-DE, 0/6, 0%, missing 6
+it-IT, 0/6, 0%, missing 6
+fr-FR, 0/6, 0%, missing 6
+es-ES, 0/6, 0%, missing 6
+ru-RU, 6/6, 100%, missing 0
+zh-Hans, 0/6, 0%, missing 6
+pt-BR, 0/6, 0%, missing 6
+pl-PL, 0/6, 0%, missing 6
